@@ -1,0 +1,39 @@
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+
+
+const HomePageComponent = () => {
+    
+    const [recipeData , setRecipeData] =useState([])
+    useEffect (() => {
+        getRecipeApi()
+    },[])
+
+    const getRecipeApi = async () => {
+        const response = await axios.get("http://localhost:3500/api/v1/recipes")
+        setRecipeData(response.data)
+    }
+    
+
+    return (
+        <React.Fragment>
+            
+        
+            {
+                recipeData && recipeData.map((it) => (
+                    <div >
+                        <p>{it.name}</p>
+                
+                        <p>{it.descriptionr}</p>
+                    </div>
+                )) 
+            }
+        
+        </React.Fragment>
+        
+    
+      )
+}
+
+
+export default HomePageComponent
