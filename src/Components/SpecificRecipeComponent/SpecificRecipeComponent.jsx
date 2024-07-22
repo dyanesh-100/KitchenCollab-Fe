@@ -10,14 +10,9 @@ const SpecificRecipeComponent = () => {
     
     const [showNutrition, setShowNutrition] = useState(false)
     const [recipeData, setRecipeData] = useState({}) 
-    
-
-
-    // const {id} = useParams();
-    
     const {name} = useParams();
     console.log(name);
-    // console.log(id);
+    
     const recipeName = name.toLocaleUpperCase();
 
     useEffect(() => {
@@ -38,21 +33,20 @@ const SpecificRecipeComponent = () => {
         <div className='view_recipe_header'>
             <div className='view_name_description_container'>
                 <div className='view_path'>
-                <Link to={`/recipes`} className='view_path_recipe' >RECIPES  </Link>
-                <p className='great'>&gt;</p>
-                <p> {recipeName}</p>
+                    <Link to={`/recipes`} className='view_path_recipe' >RECIPES  </Link>
+                    <p className='great'>&gt;</p>
+                    <p> {recipeName}</p>
                 </div>
                 
-                <p className='view_recipe_name'>{recipeData.name}  </p>
-                <p className='view_recipe_description'>{recipeData.description}</p>
+                    <p className='view_recipe_name'>{recipeData.name}  </p>
+                    <p className='view_recipe_description'>{recipeData.description}</p>
                 <div className='prep_time_container'>
                     <div className='prep_time_icon'><FontAwesomeIcon icon={faClock} / ></div>
-                    <div className='prep_time_content'>
-                        <div><p className='prep_heading'>PREP:</p><p>{recipeData.prep_time}</p></div>
-                        <div><p className='prep_heading'>COOKING TIME:</p><p>{recipeData.cooking_time}</p></div>
-                        <div><p className='prep_heading'>TOTAL TIME:</p><p>{recipeData.total_time}</p></div>
-                        
-                    </div>
+                        <div className='prep_time_content'>
+                            <div><p className='prep_heading'>PREP:</p><p>{recipeData.prep_time}</p></div>
+                            <div><p className='prep_heading'>COOKING TIME:</p><p>{recipeData.cooking_time}</p></div>
+                            <div><p className='prep_heading'>TOTAL TIME:</p><p>{recipeData.total_time}</p></div>
+                        </div>
                 </div>
                 
             </div>

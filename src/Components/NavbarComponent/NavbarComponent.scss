@@ -41,28 +41,35 @@ a{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-inline: 20vw;
+    padding-inline: 22.5vw;
     
     
 }
 @media (max-width: 1620px) { 
     .navbar
      {
-        padding-inline: 15vw;
+        padding-inline: 16.875vw;
         
     }
 }
 @media (max-width: 1376px) { 
     .navbar
      {
-        padding-inline: 7vw;
+        padding-inline: 7.875vw;
         
     }
 }
 @media (max-width: 1110px) { 
     .navbar
      {
-        padding-inline: 5vw;
+        padding-inline: 5.625vw;
+        
+    }
+}
+@media (max-width: 768px) { 
+    .navbar
+     {
+        padding-inline: 2.25vw;
         
     }
 }

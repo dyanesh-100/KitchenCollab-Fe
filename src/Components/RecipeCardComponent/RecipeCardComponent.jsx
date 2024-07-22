@@ -14,8 +14,8 @@ const HandleRecipeName = async (event) => {
     setRecipeName(event.target.value)
 }
   const getsearch = async () => {
-  const response = await axios.get(`http://localhost:3500/api/v1/recipes/${recipeName}`)
-  setRecipeData(response.data)
+    const response = await axios.get(`http://localhost:3500/api/v1/recipes/${recipeName}`)
+    setRecipeData(response.data)
 }
     useEffect (() => {
         getRecipeApi()
@@ -31,8 +31,8 @@ const HandleRecipeName = async (event) => {
     return (
         <main className='whole_container'>
             <div className='search_box_container'>
-                <input type="text" placeholder='Enter the Recipe' className='search_box' onChange={HandleRecipeName}/>
-                <Link to={`/recipes/${recipeName}`}><button className='search_box_button'><FaSearch /></button></Link>
+                <input type="text" placeholder='Enter the Recipe' className='search_box' />
+                <button className='search_box_button'><FaSearch /></button>
             </div>
             
             <div className='recipe_container'>
@@ -42,7 +42,10 @@ const HandleRecipeName = async (event) => {
                         
                         <img src={it.jpg} alt="" className='recipe_image' />
                         <p className='recipe_name'>{it.name}</p>
-                            <div className='review_container'><p className='review_stars'><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /> </p><p className='review_count'>100 REVIEWS</p></div>
+                            <div className='review_container'>
+                                <p className='review_stars'><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /> </p>
+                                <p className='review_count'>100 REVIEWS</p>
+                            </div>
                         <p className='view_recipe'>View Recipe </p>
                        
                         

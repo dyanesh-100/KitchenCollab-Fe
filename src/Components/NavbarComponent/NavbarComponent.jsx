@@ -5,6 +5,7 @@ import RecipeCardComponent from '../RecipeCardComponent/RecipeCardComponent'
 import HomePageComponent from '../HomePageComponent/HomePageComponent'
 import SpecificRecipeComponent from '../SpecificRecipeComponent/SpecificRecipeComponent'
 import Sidebar from '../Sidebar/Sidebar'
+import AddRecipesComponent from '../AddRecipesComponent/AddRecipesComponent'
 
 const NavbarComponent = () => {
   const [showSideBarButton, setShowSideBarButton] = useState(false)
@@ -21,6 +22,7 @@ const NavbarComponent = () => {
             <div className='nav_content'>
                 <Link to='/' className='nav_link'>Home</Link>
                 <Link to='/recipes' className='nav_link'>Recipies</Link>
+                <Link to='/addrecipe' className='nav_link'>Add</Link>
                 
             </div>
             <button onClick={handleButtonClick} className={showSideBarButton ? "sidebar-button active" : "sidebar-button"}>
@@ -40,6 +42,7 @@ const NavbarComponent = () => {
             <Route exact path = '/recipes' element = {<RecipeCardComponent/>}> </Route>
             <Route exact path = '/' element = {<HomePageComponent/>}> </Route>
             <Route exact path = '/recipes/:name' element = {<SpecificRecipeComponent/>}> </Route>
+            <Route exact path='/addrecipe' element = {<AddRecipesComponent/>}></Route>
         </Routes>
         
       </BrowserRouter>
