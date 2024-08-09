@@ -8,7 +8,7 @@ const FooterComponent = () =>{
                 <div className='footer_section_title'>
                     <p>KitchenCollab.com</p>
                     <br />
-                    <p>FoodiesHub is a place where you can please your soul and tummy with delicious food recepies of all cuisine. And our service is absolutely free.</p>
+                    <p>KitchenCollab is a place where you can please your soul and tummy with delicious food recepies of all cuisine. And our service is absolutely free.</p>
                     <br />
                     <p>©2021 | All Rights Reserved</p>
                 </div>

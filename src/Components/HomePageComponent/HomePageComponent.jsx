@@ -10,16 +10,25 @@ import img7 from "../../assets/images/img_7.jpg"
 import img8 from "../../assets/images/img_8.jpg"
 import img9 from "../../assets/images/img_9.jpg"
 import img10 from "../../assets/images/img_10.jpg"
+import { Link, useNavigate } from 'react-router-dom'
 
 
 const HomePageComponent = () => {
+  const navigate = useNavigate();
+  const handleClick = () =>{
+    navigate('/recipes')
+  }
   return (
     <React.Fragment >
       <section className='homepage_container1'>
         <div className='left_coloumn1'>
             <p className='about_us'>What Are We About</p>
             <p className='about_us_content'>Kitchencollab is a place where you can please your soul and tummy with delicious food recepies of all cuisine. And our service is absolutely free. So start exploring now</p>
-            <button className='btn'>Explore now</button>
+            
+            
+            <button className='btn' onClick={handleClick}>
+              Explore now
+            </button>
         </div>
         
         <div className='right_coloumn1'> 
