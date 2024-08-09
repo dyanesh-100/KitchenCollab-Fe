@@ -1,10 +1,10 @@
 import React from 'react'
-import './Sidebar.scss'
+import './SidebarComponent.scss'
 import { Link } from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
 import { MdFastfood } from "react-icons/md";
 
-const Sidebar = () => {
+const SidebarComponent = () => {
   return (
     <div className='sidebar_container'>
         <div className='sidebar_link'>
@@ -16,4 +16,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar
+export default SidebarComponent

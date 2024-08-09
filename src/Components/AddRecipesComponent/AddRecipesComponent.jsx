@@ -4,6 +4,7 @@ import axios from 'axios';
 
 
 const AddRecipesComponent = () => {
+  
   const [ingredients, setIngredients] = useState(['']);
   const [steps, setSteps] = useState(['']);
   
@@ -61,6 +62,7 @@ const AddRecipesComponent = () => {
     setSteps([...steps, '']);
   };
 
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -93,7 +95,11 @@ const AddRecipesComponent = () => {
          alert("recipe added successfully.")
           window.location.href='/recipes'
         console.log('Recipe added successfully');
-      } else {
+      } else if(response.status === 500){
+        alert("Enter the recipe")
+        
+      }
+      else{
         console.error('Error adding recipe');
       }
     } catch (error) {
@@ -261,16 +267,18 @@ const AddRecipesComponent = () => {
             />
           </div>
         </div>
-
         <div>
           <label>Recipe Image:</label>
           <input
             type="text"
             name="image"
             value={recipeData.image}
+            placeholder='Enter image url'
             onChange={handleInputChange}
           />
         </div>
+
+      
 
         <button type="submit">Submit Recipe</button>
       </form>

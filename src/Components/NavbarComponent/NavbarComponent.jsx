@@ -4,7 +4,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import RecipeCardComponent from '../RecipeCardComponent/RecipeCardComponent'
 import HomePageComponent from '../HomePageComponent/HomePageComponent'
 import SpecificRecipeComponent from '../SpecificRecipeComponent/SpecificRecipeComponent'
-import Sidebar from '../Sidebar/Sidebar'
+import SidebarComponent from '../SidebarComponent/SidebarComponent'
 import AddRecipesComponent from '../AddRecipesComponent/AddRecipesComponent'
 
 const NavbarComponent = () => {
@@ -35,7 +35,7 @@ const NavbarComponent = () => {
             
             
         </div>
-        {renderSideBar && <Sidebar/>}
+        {renderSideBar && <SidebarComponent/>}
         
         
         <Routes>
