@@ -90,7 +90,7 @@ const AddRecipesComponent = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3500/api/v1/recipes/addrecipe', newRecipe);
+      const response = await axios.post('https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecipe', newRecipe);
       if (response.status === 201) {
          alert("recipe added successfully.")
           window.location.href='/recipes'

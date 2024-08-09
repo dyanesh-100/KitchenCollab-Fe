@@ -9,7 +9,7 @@ const RecipeCardComponent = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const getRecipeApi = async () => {
-        const response = await axios.get('http://localhost:3500/api/v1/recipes');
+        const response = await axios.get('https://kitchen-collab-be.vercel.app/api/v1/recipes');
         setRecipeData(response.data);
     };
 

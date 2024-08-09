@@ -20,7 +20,7 @@ const SpecificRecipeComponent = () => {
     },[])
 
     const getData = async() => {
-        const response = await axios.get(`http://localhost:3500/api/v1/recipes/${name}`)
+        const response = await axios.get(`https://kitchen-collab-be.vercel.app/api/v1/recipes/${name}`)
         setRecipeData(response.data);
         console.log(response.data);
     }
