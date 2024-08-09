@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './NavbarComponent.scss'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import RecipeCardComponent from '../RecipeCardComponent/RecipeCardComponent'
@@ -10,10 +10,31 @@ import AddRecipesComponent from '../AddRecipesComponent/AddRecipesComponent'
 const NavbarComponent = () => {
   const [showSideBarButton, setShowSideBarButton] = useState(false)
   const [renderSideBar , setRenderSideBar] = useState(false)
-  const handleButtonClick = () => {
-    setRenderSideBar(prevState => !prevState);
-  };
   
+  const handleButtonClick = () => {
+    const newState = !renderSideBar;
+    setRenderSideBar(newState);
+    setShowSideBarButton(newState);
+  };
+
+  const handleOverlayClick = () => {
+    setRenderSideBar(false);
+    setShowSideBarButton(false);
+  };
+
+  const handleMenuClick = () => {
+    setRenderSideBar(false);
+    setShowSideBarButton(false);
+  };
+
+
+  useEffect(() => { 
+    if (renderSideBar) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [renderSideBar]);
   return (
     
       <BrowserRouter>
@@ -34,8 +55,11 @@ const NavbarComponent = () => {
             </button>
             
             
+            
         </div>
-        {renderSideBar && <SidebarComponent/>}
+        {renderSideBar && <div className="overlay" onClick={handleOverlayClick}></div>}
+            {renderSideBar && <SidebarComponent handleMenuClick={handleMenuClick} />}
+        
         
         
         <Routes>

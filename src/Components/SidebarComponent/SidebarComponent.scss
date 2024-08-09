@@ -22,17 +22,52 @@
     top: 0;
     left: 0;
     height: 100vh;
+    clip-path: inset(58px 0 0 0);
     width: 260px;
     background-color: var(--background-color);
-    box-shadow: 0 0 0 1000px rgba(0,0,0,0.2),
-                3px 0 5px var(--shadow-color);
+    
+    z-index: 1001; /* Ensure the sidebar is above other content, including overlay */
+    pointer-events: auto;
 }
 .sidebar_link{
+    margin-top: 75px;
+    padding-inline: 2.25vw;
     display: flex;
     flex-direction: column;
-
+    row-gap: 25px;
+    
     
 }
 .nav_link{
-    color: #0A0A0A;
+    color: var(--primary-color);
+    display: flex;
+    gap: 8px;
+    
+    align-items: center;
+
 }
+.sidebar_menu{
+    color: #0A0A0A;
+    font-size: 17px;
+}
+.sidebar_menu_icon{
+    font-size: 23px;
+}
+
+.no-scroll {
+    overflow: hidden;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 260px; 
+    height: 100vh;
+    clip-path: inset(55px 0 0 0);
+    width: calc(100% - 260px); 
+    background: rgba(0, 0, 0, 0.2); 
+    z-index: 1000; 
+    pointer-events: auto; 
+  }
+
+  

@@ -109,7 +109,7 @@ const AddRecipesComponent = () => {
 
   return (
     <div className="container">
-      <h2>Add a New Recipe</h2>
+      <h2 className='add_recipe'>Add a New Recipe</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Recipe Name:</label>
@@ -268,12 +268,12 @@ const AddRecipesComponent = () => {
           </div>
         </div>
         <div>
-          <label>Recipe Image:</label>
+          <label>Recipe Image (image url):</label>
           <input
             type="text"
             name="image"
             value={recipeData.image}
-            placeholder='Enter image url'
+            
             onChange={handleInputChange}
           />
         </div>

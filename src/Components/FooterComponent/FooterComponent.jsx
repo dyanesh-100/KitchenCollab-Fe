@@ -17,8 +17,8 @@ const FooterComponent = () =>{
                     <br />
                     <div className='footer_items'>
                         <p>KitchenCollab@gmail.com</p>
-                        <p>+342-5324-9454</p>
-                        <p>2393 Street NYC</p>
+                        <p>+91 8825949713</p>
+                        <p>Porur, Chennai</p>
                     </div>
                     
                 </div>
