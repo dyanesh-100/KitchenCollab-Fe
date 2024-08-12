@@ -65,7 +65,7 @@ const NavbarComponent = () => {
         <Routes>
             <Route exact path = '/recipes' element = {<RecipeCardComponent/>}> </Route>
             <Route exact path = '/' element = {<HomePageComponent/>}> </Route>
-            <Route exact path = '/recipes/:name' element = {<SpecificRecipeComponent/>}> </Route>
+            <Route exact path = '/recipes/:recipeName' element = {<SpecificRecipeComponent/>}> </Route>
             <Route exact path='/addrecipe' element = {<AddRecipesComponent/>}></Route>
         </Routes>
         

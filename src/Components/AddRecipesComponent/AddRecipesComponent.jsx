@@ -9,37 +9,50 @@ const AddRecipesComponent = () => {
   const [steps, setSteps] = useState(['']);
   
   const [recipeData, setRecipeData] = useState({
-    name: '',
+    recipeName: '',
     description: '',
-    prepTime: '',
-    cookTime: '',
-    totalTime: '',
-    image: '',
+    prep_time: '',
+    cooking_time: '',
+    total_time: '',
+    images: [],
+    nutrition_info: {
+      calories: '',
+      total_carbohydrate: '',
+      total_fat: '',
+      trans_fat: '',
+      dietary_fibre: '',
+      total_sugar: '',
+      cholesterol: '',
+      protein: '',
+    },
   });
-  const [nutritionInfo, setNutritionInfo] = useState({
-    calories: '',
-    totalCarbohydrate: '',
-    totalFat: '',
-    transFat: '',
-    dietaryFibre: '',
-    totalSugar: '',
-    cholesterol: '',
-    protein: '',
-  });
-
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setRecipeData({
-      ...recipeData,
-      [name]: value,
-    });
+    if (name in recipeData.nutrition_info) {
+      setRecipeData({
+        ...recipeData,
+        nutrition_info: {
+          ...recipeData.nutrition_info,
+          [name]: value,
+        },
+      });
+    } else {
+      setRecipeData({
+        ...recipeData,
+        [name]: value,
+      });
+    }
   };
   const handleNutritionInfoChange = (event) => {
     const { name, value } = event.target;
-    setNutritionInfo({
-      ...nutritionInfo,
-      [name]: value,
-    });
+    setRecipeData((prevData) => ({
+      ...prevData,
+      nutrition_info: {
+        ...prevData.nutrition_info,
+        [name]: value,
+      },
+    }));
   };
 
   const handleIngredientChange = (index, value) => {
@@ -62,46 +75,67 @@ const AddRecipesComponent = () => {
     setSteps([...steps, '']);
   };
 
+  const handleImageChange = (event) => {
+    setRecipeData((prev) => ({
+      ...prev,
+      images: Array.from(event.target.files),
+    }));
+  };
+
+  const formData = new FormData()
+  formData.append('recipeName', recipeData.recipeName);
+  formData.append('description' , recipeData.description);
+  formData.append('prep_time',recipeData.prep_time);
+  formData.append('cooking_time',recipeData.cooking_time);
+  formData.append('total_time',recipeData.total_time);
+
+  formData.append('calories', recipeData.nutrition_info.calories);
+  formData.append('total_carbohydrate', recipeData.nutrition_info.total_carbohydrate);
+  formData.append('total_fat', recipeData.nutrition_info.total_fat);
+  formData.append('trans_fat', recipeData.nutrition_info.trans_fat);
+  formData.append('dietary_fibre', recipeData.nutrition_info.dietary_fibre);
+  formData.append('total_sugar', recipeData.nutrition_info.total_sugar);
+  formData.append('cholesterol', recipeData.nutrition_info.cholesterol);
+  formData.append('protein', recipeData.nutrition_info.protein);
+
+  recipeData.images.forEach((image) => {
+    formData.append('images',image)
+  })
+
+  ingredients.forEach((ingredient) => {
+    formData.append('ingredients',ingredient)
+  })
+
+  steps.forEach((step) => {
+    formData.append('steps',step)
+
+  })
+
   
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const newRecipe = {
-      name: recipeData.name,
-      description: recipeData.description,
-      ingredients,
-      steps,
-      prep_time: recipeData.prepTime, 
-      cooking_time: recipeData.cookTime, 
-      total_time: recipeData.totalTime,
-      nutrition_info: {
-        per_serving: {
-          calories: parseInt(nutritionInfo.calories, 10),
-          total_carbohydrate: nutritionInfo.totalCarbohydrate,
-          total_fat: nutritionInfo.totalFat,
-          trans_fat: nutritionInfo.transFat,
-          dietary_fibre: nutritionInfo.dietaryFibre,
-          total_sugar: nutritionInfo.totalSugar,
-          cholesterol: nutritionInfo.cholesterol,
-          protein: nutritionInfo.protein,
-        },
-      },
-      jpg: recipeData.image,
-    };
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+  }
 
     try {
-      const response = await axios.post('https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecipe', newRecipe);
-      if (response.status === 201) {
-         alert("recipe added successfully.")
-          window.location.href='/recipes'
-        console.log('Recipe added successfully');
-      } else if(response.status === 500){
-        alert("Enter the recipe")
-        
-      }
-      else{
-        console.error('Error adding recipe');
-      }
+      const response = await axios.post('https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecipe', formData,
+        {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+      });
+      if(response.status === 201){
+        toast("Recipe added successfully")
+        setTimeout(() => {
+            window.location.href = "/recipes"
+        },3000)
+    }
+    else{
+        toast(`Error ${response.status}:Error adding recipe`)
+        toast(`${response.message}`)
+    }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -115,8 +149,8 @@ const AddRecipesComponent = () => {
           <label>Recipe Name:</label>
           <input
             type="text"
-            name="name"
-            value={recipeData.name}
+            name="recipeName"
+            value={recipeData.recipeName}
             onChange={handleInputChange}
           />
         </div>
@@ -166,8 +200,8 @@ const AddRecipesComponent = () => {
           <label>Preparation Time:</label>
           <input
             type="text"
-            name="prepTime"
-            value={recipeData.prepTime}
+            name="prep_time"
+            value={recipeData.prep_time}
             onChange={handleInputChange}
           />
         </div>
@@ -176,8 +210,8 @@ const AddRecipesComponent = () => {
           <label>Cooking Time:</label>
           <input
             type="text"
-            name="cookTime"
-            value={recipeData.cookTime}
+            name="cooking_time"
+            value={recipeData.cooking_time}
             onChange={handleInputChange}
           />
         </div>
@@ -186,8 +220,8 @@ const AddRecipesComponent = () => {
           <label>Total Time:</label>
           <input
             type="text"
-            name="totalTime"
-            value={recipeData.totalTime}
+            name="total_time"
+            value={recipeData.total_time}
             onChange={handleInputChange}
           />
         </div>
@@ -199,7 +233,7 @@ const AddRecipesComponent = () => {
             <input
               type="text"
               name="calories"
-              value={nutritionInfo.calories}
+              value={recipeData.nutrition_info.calories}
               onChange={handleNutritionInfoChange}
             />
           </div>
@@ -207,8 +241,8 @@ const AddRecipesComponent = () => {
             <label>Total Carbohydrate:</label>
             <input
               type="text"
-              name="totalCarbohydrate"
-              value={nutritionInfo.totalCarbohydrate}
+              name="total_carbohydrate"
+              value={recipeData.nutrition_info.total_carbohydrate}
               onChange={handleNutritionInfoChange}
             />
           </div>
@@ -216,8 +250,8 @@ const AddRecipesComponent = () => {
             <label>Total Fat:</label>
             <input
               type="text"
-              name="totalFat"
-              value={nutritionInfo.totalFat}
+              name="total_fat"
+              value={recipeData.nutrition_info.total_fat}
               onChange={handleNutritionInfoChange}
             />
           </div>
@@ -225,8 +259,8 @@ const AddRecipesComponent = () => {
             <label>Trans Fat:</label>
             <input
               type="text"
-              name="transFat"
-              value={nutritionInfo.transFat}
+              name="trans_fat"
+              value={recipeData.nutrition_info.trans_fat}
               onChange={handleNutritionInfoChange}
             />
           </div>
@@ -234,8 +268,8 @@ const AddRecipesComponent = () => {
             <label>Dietary Fibre:</label>
             <input
               type="text"
-              name="dietaryFibre"
-              value={nutritionInfo.dietaryFibre}
+              name="dietary_fibre"
+              value={recipeData.nutrition_info.dietary_fibre}
               onChange={handleNutritionInfoChange}
             />
           </div>
@@ -243,8 +277,8 @@ const AddRecipesComponent = () => {
             <label>Total Sugar:</label>
             <input
               type="text"
-              name="totalSugar"
-              value={nutritionInfo.totalSugar}
+              name="total_sugar"
+              value={recipeData.nutrition_info.total_sugar}
               onChange={handleNutritionInfoChange}
             />
           </div>
@@ -253,7 +287,7 @@ const AddRecipesComponent = () => {
             <input
               type="text"
               name="cholesterol"
-              value={nutritionInfo.cholesterol}
+              value={recipeData.nutrition_info.cholesterol}
               onChange={handleNutritionInfoChange}
             />
           </div>
@@ -262,23 +296,20 @@ const AddRecipesComponent = () => {
             <input
               type="text"
               name="protein"
-              value={nutritionInfo.protein}
+              value={recipeData.nutrition_info.protein}
               onChange={handleNutritionInfoChange}
             />
           </div>
         </div>
+
         <div>
-          <label>Recipe Image (image url):</label>
+          <label>Upload Images:</label>
           <input
-            type="text"
-            name="image"
-            value={recipeData.image}
-            
-            onChange={handleInputChange}
+            type="file"
+            multiple
+            onChange={handleImageChange}
           />
         </div>
-
-      
 
         <button type="submit">Submit Recipe</button>
       </form>

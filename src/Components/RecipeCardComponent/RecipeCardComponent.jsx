@@ -50,9 +50,9 @@ const RecipeCardComponent = () => {
 
             <div className='recipe_container'>
                 {getFilteredRecipes().map((it) => (
-                    <Link to={`/recipes/${it.name.toLowerCase()}`} className='recipe_card' key={it._id}>
-                        <img src={it.jpg} alt={it.name} className='recipe_image' />
-                        <p className='recipe_name'>{it.name}</p>
+                    <Link to={`/recipes/${it.recipeName.toLowerCase()}`} className='recipe_card' key={it._id}>
+                        <img src={it.images} alt={it.recipeName} className='recipe_image' />
+                        <p className='recipe_name'>{it.recipeName}</p>
                         <div className='review_container'>
                             <p className='review_stars'>
                                 <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />

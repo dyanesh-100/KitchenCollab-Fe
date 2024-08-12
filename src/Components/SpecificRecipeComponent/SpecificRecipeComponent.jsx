@@ -10,17 +10,17 @@ const SpecificRecipeComponent = () => {
     
     const [showNutrition, setShowNutrition] = useState(false)
     const [recipeData, setRecipeData] = useState({}) 
-    const {name} = useParams();
-    console.log(name);
+    const {recipeName} = useParams();
+    console.log(recipeName);
     
-    const recipeName = name.toLocaleUpperCase();
+    const recipename = recipeName.toLocaleUpperCase();
 
     useEffect(() => {
         getData();
     },[])
 
     const getData = async() => {
-        const response = await axios.get(`https://kitchen-collab-be.vercel.app/api/v1/recipes/${name}`)
+        const response = await axios.get(`https://kitchen-collab-be.vercel.app/api/v1/recipes/${recipeName}`)
         setRecipeData(response.data);
         console.log(response.data);
     }
@@ -35,10 +35,10 @@ const SpecificRecipeComponent = () => {
                 <div className='view_path'>
                     <Link to={`/recipes`} className='view_path_recipe' >RECIPES  </Link>
                     <p className='great'>&gt;</p>
-                    <p> {recipeName}</p>
+                    <p> {recipename}</p>
                 </div>
                 
-                    <p className='view_recipe_name'>{recipeData.name}  </p>
+                    <p className='view_recipe_name'>{recipeData.recipeName}  </p>
                     <p className='view_recipe_description'>{recipeData.description}</p>
                 <div className='prep_time_container'>
                     <div className='prep_time_icon'><FontAwesomeIcon icon={faClock} / ></div>
@@ -52,7 +52,7 @@ const SpecificRecipeComponent = () => {
             </div>
         
             <div className='view_image_container'>
-                <img src={recipeData.jpg} alt=""  className='view_recipe_image'/>
+                <img src={recipeData.images} alt=""  className='view_recipe_image'/>
             </div>
         </div>
         
