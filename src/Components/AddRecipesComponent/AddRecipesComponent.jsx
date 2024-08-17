@@ -3,10 +3,12 @@ import './AddRecipesComponent.css';
 import axios from 'axios';
 
 
+
 const AddRecipesComponent = () => {
   
   const [ingredients, setIngredients] = useState(['']);
   const [steps, setSteps] = useState(['']);
+  const [caloriesError, setCaloriesError] = useState('');
   
   const [recipeData, setRecipeData] = useState({
     recipeName: '',
@@ -16,44 +18,51 @@ const AddRecipesComponent = () => {
     total_time: '',
     images: [],
     nutrition_info: {
-      calories: '',
-      total_carbohydrate: '',
-      total_fat: '',
-      trans_fat: '',
-      dietary_fibre: '',
-      total_sugar: '',
-      cholesterol: '',
-      protein: '',
+        per_serving:{
+        calories: 0,
+        total_carbohydrate: '',
+        total_fat: '',
+        trans_fat: '',
+        dietary_fibre: '',
+        total_sugar: '',
+        cholesterol: '',
+        protein: '',
+        }
     },
   });
   
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    if (name in recipeData.nutrition_info) {
-      setRecipeData({
-        ...recipeData,
-        nutrition_info: {
-          ...recipeData.nutrition_info,
-          [name]: value,
-        },
-      });
-    } else {
+
       setRecipeData({
         ...recipeData,
         [name]: value,
       });
-    }
+    
   };
-  const handleNutritionInfoChange = (event) => {
-    const { name, value } = event.target;
+  const handleNutritionInfoChange = (event,field) => {
+    const { value } = event.target;
+    if (field === 'calories') {
+      if (isNaN(value)) {
+        setCaloriesError('*Please enter a valid number for calories.');
+      } else {
+        setCaloriesError('');
+      }
+    }
+    
     setRecipeData((prevData) => ({
       ...prevData,
       nutrition_info: {
         ...prevData.nutrition_info,
-        [name]: value,
+        per_serving: {
+          ...prevData.nutrition_info.per_serving,
+          [field]: value,
+        },
       },
     }));
   };
+  
+  
 
   const handleIngredientChange = (index, value) => {
     const newIngredients = [...ingredients];
@@ -89,14 +98,14 @@ const AddRecipesComponent = () => {
   formData.append('cooking_time',recipeData.cooking_time);
   formData.append('total_time',recipeData.total_time);
 
-  formData.append('calories', recipeData.nutrition_info.calories);
-  formData.append('total_carbohydrate', recipeData.nutrition_info.total_carbohydrate);
-  formData.append('total_fat', recipeData.nutrition_info.total_fat);
-  formData.append('trans_fat', recipeData.nutrition_info.trans_fat);
-  formData.append('dietary_fibre', recipeData.nutrition_info.dietary_fibre);
-  formData.append('total_sugar', recipeData.nutrition_info.total_sugar);
-  formData.append('cholesterol', recipeData.nutrition_info.cholesterol);
-  formData.append('protein', recipeData.nutrition_info.protein);
+  formData.append('nutrition_info[per_serving][calories]', recipeData.nutrition_info.per_serving.calories);
+  formData.append('nutrition_info[per_serving][total_carbohydrate]', recipeData.nutrition_info.per_serving.total_carbohydrate);
+  formData.append('nutrition_info[per_serving][total_fat]', recipeData.nutrition_info.per_serving.total_fat);
+  formData.append('nutrition_info[per_serving][trans_fat]', recipeData.nutrition_info.per_serving.trans_fat);
+  formData.append('nutrition_info[per_serving][dietary_fibre]', recipeData.nutrition_info.per_serving.dietary_fibre);
+  formData.append('nutrition_info[per_serving][total_sugar]', recipeData.nutrition_info.per_serving.total_sugar);
+  formData.append('nutrition_info[per_serving][cholesterol]', recipeData.nutrition_info.per_serving.cholesterol);
+  formData.append('nutrition_info[per_serving][protein]', recipeData.nutrition_info.per_serving.protein);
 
   recipeData.images.forEach((image) => {
     formData.append('images',image)
@@ -115,11 +124,14 @@ const AddRecipesComponent = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const calories = parseFloat(recipeData.nutrition_info.per_serving.calories);
+    
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
   }
 
     try {
+      // https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecip
       const response = await axios.post('https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecipe', formData,
         {
           headers: {
@@ -127,14 +139,14 @@ const AddRecipesComponent = () => {
           }
       });
       if(response.status === 201){
-        toast("Recipe added successfully")
+        alert("Recipe added successfully")
         setTimeout(() => {
             window.location.href = "/recipes"
         },3000)
     }
     else{
-        toast(`Error ${response.status}:Error adding recipe`)
-        toast(`${response.message}`)
+        alert(`Error ${response.status}:Error adding recipe`)
+        alert(`${response.message}`)
     }
     } catch (error) {
       console.error('Error:', error);
@@ -227,87 +239,91 @@ const AddRecipesComponent = () => {
         </div>
 
         <div>
-          <label>Nutrition Information:</label>
-          <div>
+          <label  >Nutrition Information:</label>
+          <div className='nutrition_info_calories'>
             <label>Calories:</label>
             <input
               type="text"
               name="calories"
-              value={recipeData.nutrition_info.calories}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.calories}
+              onChange={(e) => handleNutritionInfoChange(e, 'calories')}
             />
+            {caloriesError && <div className="error-message">{caloriesError}</div>}
           </div>
-          <div>
+          
+          <div className='nutrition_info'>
             <label>Total Carbohydrate:</label>
             <input
               type="text"
               name="total_carbohydrate"
-              value={recipeData.nutrition_info.total_carbohydrate}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.total_carbohydrate}
+              onChange={(e) => handleNutritionInfoChange(e, 'total_carbohydrate')}
+              
             />
           </div>
-          <div>
+          <div className='nutrition_info'>
             <label>Total Fat:</label>
             <input
               type="text"
               name="total_fat"
-              value={recipeData.nutrition_info.total_fat}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.total_fat}
+              onChange={(e) => handleNutritionInfoChange(e, 'total_fat')}
             />
           </div>
-          <div>
+          <div className='nutrition_info'>
             <label>Trans Fat:</label>
             <input
               type="text"
               name="trans_fat"
-              value={recipeData.nutrition_info.trans_fat}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.trans_fat}
+              onChange={(e) => handleNutritionInfoChange(e, 'trans_fat')}
             />
           </div>
-          <div>
+          <div className='nutrition_info'>
             <label>Dietary Fibre:</label>
             <input
               type="text"
               name="dietary_fibre"
-              value={recipeData.nutrition_info.dietary_fibre}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.dietary_fibre}
+              onChange={(e) => handleNutritionInfoChange(e, 'dietary_fibre')}
             />
           </div>
-          <div>
+          <div className='nutrition_info'>
             <label>Total Sugar:</label>
             <input
               type="text"
               name="total_sugar"
-              value={recipeData.nutrition_info.total_sugar}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.total_sugar}
+              onChange={(e) => handleNutritionInfoChange(e, 'total_sugar')}
             />
           </div>
-          <div>
+          <div className='nutrition_info'>
             <label>Cholesterol:</label>
             <input
               type="text"
               name="cholesterol"
-              value={recipeData.nutrition_info.cholesterol}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.cholesterol}
+              onChange={(e) => handleNutritionInfoChange(e, 'cholesterol')}
             />
           </div>
-          <div>
+          <div >
             <label>Protein:</label>
             <input
               type="text"
               name="protein"
-              value={recipeData.nutrition_info.protein}
-              onChange={handleNutritionInfoChange}
+              value={recipeData.nutrition_info.per_serving.protein}
+              onChange={(e) => handleNutritionInfoChange(e, 'protein')}
             />
           </div>
         </div>
 
-        <div>
+        <div >
           <label>Upload Images:</label>
           <input
             type="file"
             multiple
             onChange={handleImageChange}
+            className='image_upload'
           />
         </div>
 

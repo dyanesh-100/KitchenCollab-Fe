@@ -296,6 +296,7 @@
 
 .nutrition_info_container{
     font-size: var(--font-size);
+    
     position: relative;
     
 }
@@ -332,7 +333,11 @@
     font-family: Helvetica;
     
 }
+.no-scroll{
+    overflow: hidden;
+}
 .modal-overlay {
+    
     position: fixed;
     top: 0;
     left: 0;
@@ -346,6 +351,7 @@
   }
   
   .modal-content {
+    
     background-color: white;
     padding: 80px;
     border-radius: 5px;

@@ -26,7 +26,30 @@ const SpecificRecipeComponent = () => {
     }
     const toggleNutrition = () => {
         setShowNutrition(!showNutrition);
+        
     }
+    useEffect(() => {
+        if (showNutrition) {
+          document.body.classList.add('no-scroll');
+        } else {
+          document.body.classList.remove('no-scroll');
+        }
+    
+       
+        return () => {
+          document.body.classList.remove('no-scroll');
+        };
+      }, [showNutrition]);
+
+    
+    const getImageUrl = (image) => {
+        if (image.startsWith('http') || image.startsWith('https')) {
+            return image; // Full URL, return as is
+        } else {
+            return `https://kitchen-collab-be.vercel.app/${image}`; // Relative path, prepend server URL
+        }
+    };
+    
   return (
     
     <main className='view_recipe_container'>
@@ -52,7 +75,7 @@ const SpecificRecipeComponent = () => {
             </div>
         
             <div className='view_image_container'>
-                <img src={recipeData.images} alt=""  className='view_recipe_image'/>
+                <img src={recipeData.images && getImageUrl(recipeData.images[0])} alt=""  className='view_recipe_image'/>
             </div>
         </div>
         
