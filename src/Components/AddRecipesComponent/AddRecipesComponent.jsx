@@ -132,7 +132,7 @@ const AddRecipesComponent = () => {
 
     try {
       // https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecip
-      const response = await axios.post('https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecipe', formData,
+      const response = await axios.post("https://kitchen-collab-be.vercel.app/api/v1/recipes/addrecipe", formData,
         {
           headers: {
               'Content-Type': 'multipart/form-data'
