@@ -7,11 +7,18 @@ import { FaStar, FaSearch } from 'react-icons/fa';
 const RecipeCardComponent = () => {
     const [recipeData, setRecipeData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(true);
     // const imageUrl = `http://localhost:3500/${recipeData.images[0]}`;
 
     const getRecipeApi = async () => {
-        const response = await axios.get('https://kitchen-collab-be.vercel.app/api/v1/recipes');
-        setRecipeData(response.data);
+        try {
+            const response = await axios.get('https://kitchen-collab-be.vercel.app/api/v1/recipes');
+            setRecipeData(response.data);
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
+        } finally {
+            setLoading(false); 
+        }
     };
 
     useEffect(() => {
@@ -59,19 +66,23 @@ const RecipeCardComponent = () => {
             </div>
 
             <div className='recipe_container'>
-                {getFilteredRecipes().map((it) => (
-                    <Link to={`/recipes/${it.recipeName.toLowerCase()}`} className='recipe_card' key={it._id}>
-                        <img src={getImageUrl(it.images[0])} alt={it.recipeName} className='recipe_image' />
-                        <p className='recipe_name'>{it.recipeName}</p>
-                        <div className='review_container'>
-                            <p className='review_stars'>
-                                <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
-                            </p>
-                            <p className='review_count'>100 REVIEWS</p>
-                        </div>
-                        <p className='view_recipe'>View Recipe</p>
-                    </Link>
-                ))}
+                {loading ? (
+                    <div className="spinner"></div> 
+                ) : (
+                    getFilteredRecipes().map((it) => (
+                        <Link to={`/recipes/${it.recipeName.toLowerCase()}`} className='recipe_card' key={it._id}>
+                            <img src={getImageUrl(it.images[0])} alt={it.recipeName} className='recipe_image' />
+                            <p className='recipe_name'>{it.recipeName}</p>
+                            <div className='review_container'>
+                                <p className='review_stars'>
+                                    <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                                </p>
+                                <p className='review_count'>100 REVIEWS</p>
+                            </div>
+                            <p className='view_recipe'>View Recipe</p>
+                        </Link>
+                    ))
+                )}
             </div>
         </main>
     );
