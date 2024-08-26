@@ -36,10 +36,15 @@ const RecipeCardComponent = () => {
             return recipeData;
         }
 
-        return recipeData.filter(recipe =>
-            recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        return recipeData.filter(recipe => {
+            
+            if (recipe && recipe.recipeName) {
+                return recipe.recipeName.toLowerCase().includes(searchTerm.toLowerCase());
+            }
+            return false; 
+        });
     };
+    const filteredRecipes = getFilteredRecipes();
 
     const getImageUrl = (image) => {
         
@@ -69,6 +74,7 @@ const RecipeCardComponent = () => {
                 {loading ? (
                     <div className="spinner"></div> 
                 ) : (
+                    filteredRecipes.length > 0 ? (
                     getFilteredRecipes().map((it) => (
                         <Link to={`/recipes/${it.recipeName.toLowerCase()}`} className='recipe_card' key={it._id}>
                             <img src={getImageUrl(it.images[0])} alt={it.recipeName} className='recipe_image' />
@@ -82,6 +88,9 @@ const RecipeCardComponent = () => {
                             <p className='view_recipe'>View Recipe</p>
                         </Link>
                     ))
+                ) : (
+                    <p className="no_recipes">No recipes found matching your search criteria.</p> // Show this if no recipes found
+                )
                 )}
             </div>
         </main>
