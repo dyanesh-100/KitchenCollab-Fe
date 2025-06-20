@@ -77,9 +77,7 @@ const HomePageComponent = () => {
                 <div className='vertical_line'></div>
                 <p className='skill_item'>Write your own recipes</p>
               </div>
-              
             </div>
-              
               <button className='btn signup'>SIGNUP NOW</button>
           </div>
           
